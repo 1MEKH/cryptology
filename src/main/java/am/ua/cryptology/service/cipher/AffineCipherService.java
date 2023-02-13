@@ -38,5 +38,4 @@ public class AffineCipherService extends CipherHelper {
         return plainText.toString();
     }
 
-
 }
