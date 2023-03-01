@@ -1,9 +1,10 @@
 package am.ua.cryptology.controller;
 
 import am.ua.cryptology.exception.ApiException;
-import am.ua.cryptology.service.cipher.AffineCipherService;
-import am.ua.cryptology.service.cipher.CaesarService;
-import am.ua.cryptology.service.cipher.LinearCipherService;
+import am.ua.cryptology.service.cipher.first.AffineCipherService;
+import am.ua.cryptology.service.cipher.first.CaesarService;
+import am.ua.cryptology.service.cipher.first.LinearCipherService;
+import am.ua.cryptology.service.cipher.second.PlayfairCipherService;
 import am.ua.cryptology.service.io.IOService;
 import lombok.AllArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
@@ -19,6 +20,7 @@ public class CommandCipherController {
     private final CaesarService caesarService;
     private final LinearCipherService linearCipherService;
     private final AffineCipherService affineCipherService;
+    private final PlayfairCipherService playfairCipherService;
     private final IOService ioService;
 
     @ShellMethod(value = "Caesar cipher encrypt command", key = {"-caesar encrypt:", "--c e"})
@@ -55,6 +57,28 @@ public class CommandCipherController {
     public String affineDecrypt() throws ApiException {
         var response = ioService.askTextForCipherWithTwoKey().split(SEPARATOR);
         return affineCipherService.decrypt(response[0], parseKey(response[1]), parseKey(response[2]));
+    }
+
+    @ShellMethod(value = "Playfair cipher encrypt command", key = {"-playfair encrypt:", "--p e"})
+    public String playfairEncrypt() {
+        var response = ioService.askTextForCipherWithOneKey().split(SEPARATOR);
+        var text = response[0].split(" ");
+        var sb = new StringBuilder();
+        for (var word : text) {
+            sb.append(playfairCipherService.encrypt(word, response[1])).append(" ");
+        }
+        return sb.toString();
+    }
+
+    @ShellMethod(value = "Playfair cipher decrypt command", key = {"-playfair decrypt:", "--p d"})
+    public String playfairDecrypt() {
+        var response = ioService.askTextForCipherWithOneKey().split(SEPARATOR);
+        var text = response[0].split(" ");
+        var sb = new StringBuilder();
+        for (var word : text) {
+            sb.append(playfairCipherService.decrypt(word, response[1])).append(" ");
+        }
+        return sb.toString();
     }
 
     private int parseKey(String value) throws ApiException {

@@ -1,5 +1,6 @@
-package am.ua.cryptology.service.cipher;
+package am.ua.cryptology.service.cipher.first;
 
+import am.ua.cryptology.service.cipher.first.LinearCipherService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,28 +9,26 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes = AffineCipherService.class)
-class AffineCipherServiceTest {
+@SpringBootTest(classes = LinearCipherService.class)
+class LinearCipherServiceTest {
 
     @Autowired
-    private AffineCipherService affineCipherService;
+    private LinearCipherService linearCipherService;
 
     private String text;
-    private int a;
-    private int b;
+    private int key;
 
     @BeforeEach
     public void setUp() {
         text = "Hello";
-        a = 5;
-        b = 8;
+        key = 3;
     }
 
     @Test
     @DisplayName("Encrypt -> Decrypt")
     void testEncryptDecrypt() {
-        var encryptedText = affineCipherService.encrypt(text, a, b);
-        var result = affineCipherService.decrypt(encryptedText, a, b);
+        var encryptedText = linearCipherService.encrypt(text, key);
+        var result = linearCipherService.decrypt(encryptedText, key);
         assertEquals(result, text);
     }
 }

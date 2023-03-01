@@ -1,5 +1,6 @@
-package am.ua.cryptology.service.cipher;
+package am.ua.cryptology.service.cipher.first;
 
+import am.ua.cryptology.service.cipher.first.CaesarService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,11 +9,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes = LinearCipherService.class)
-class LinearCipherServiceTest {
+@SpringBootTest(classes = CaesarService.class)
+class CaesarServiceTest {
 
     @Autowired
-    private LinearCipherService linearCipherService;
+    private CaesarService caesarService;
 
     private String text;
     private int key;
@@ -26,8 +27,9 @@ class LinearCipherServiceTest {
     @Test
     @DisplayName("Encrypt -> Decrypt")
     void testEncryptDecrypt() {
-        var encryptedText = linearCipherService.encrypt(text, key);
-        var result = linearCipherService.decrypt(encryptedText, key);
+        var encryptedText = caesarService.encrypt(text, key);
+        var result = caesarService.decrypt(encryptedText, key);
         assertEquals(result, text);
     }
+
 }

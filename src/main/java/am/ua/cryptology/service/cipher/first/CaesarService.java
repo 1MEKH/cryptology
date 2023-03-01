@@ -1,4 +1,4 @@
-package am.ua.cryptology.service.cipher;
+package am.ua.cryptology.service.cipher.first;
 
 import am.ua.cryptology.utils.CipherHelper;
 import org.springframework.stereotype.Service;
