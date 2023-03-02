@@ -21,4 +21,9 @@ public class IOService {
         return scanner.nextLine();
     }
 
+    public String askTextForCipher() {
+        System.out.println("Write text for encrypt/decrypt :: ");
+        return scanner.nextLine();
+    }
+
 }

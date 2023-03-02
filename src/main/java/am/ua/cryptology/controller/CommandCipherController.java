@@ -4,6 +4,7 @@ import am.ua.cryptology.exception.ApiException;
 import am.ua.cryptology.service.cipher.first.AffineCipherService;
 import am.ua.cryptology.service.cipher.first.CaesarService;
 import am.ua.cryptology.service.cipher.first.LinearCipherService;
+import am.ua.cryptology.service.cipher.second.HillCipherService;
 import am.ua.cryptology.service.cipher.second.PlayfairCipherService;
 import am.ua.cryptology.service.io.IOService;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,7 @@ public class CommandCipherController {
     private final LinearCipherService linearCipherService;
     private final AffineCipherService affineCipherService;
     private final PlayfairCipherService playfairCipherService;
+    private final HillCipherService hillCipherService;
     private final IOService ioService;
 
     @ShellMethod(value = "Caesar cipher encrypt command", key = {"-caesar encrypt:", "--c e"})
@@ -77,6 +79,26 @@ public class CommandCipherController {
         var sb = new StringBuilder();
         for (var word : text) {
             sb.append(playfairCipherService.decrypt(word, response[1])).append(" ");
+        }
+        return sb.toString();
+    }
+
+    @ShellMethod(value = "Hill cipher encrypt command", key = {"-hill encrypt:", "--h e"})
+    public String hillEncrypt() throws ApiException {
+        var response = ioService.askTextForCipher();
+        var sb = new StringBuilder();
+        for (var word : response.split(" ")) {
+            sb.append(hillCipherService.encrypt(word)).append(" ");
+        }
+        return sb.toString();
+    }
+
+    @ShellMethod(value = "Hill cipher decrypt command", key = {"-hill decrypt:", "--h d"})
+    public String hillDecrypt() throws ApiException {
+        var response = ioService.askTextForCipher();
+        var sb = new StringBuilder();
+        for (var word : response.split(" ")) {
+            sb.append(hillCipherService.decrypt(word)).append(" ");
         }
         return sb.toString();
     }
