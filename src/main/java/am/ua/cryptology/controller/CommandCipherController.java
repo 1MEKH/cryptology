@@ -6,6 +6,7 @@ import am.ua.cryptology.service.cipher.first.CaesarService;
 import am.ua.cryptology.service.cipher.first.LinearCipherService;
 import am.ua.cryptology.service.cipher.second.HillCipherService;
 import am.ua.cryptology.service.cipher.second.PlayfairCipherService;
+import am.ua.cryptology.service.cipher.third.VigenereCipherService;
 import am.ua.cryptology.service.io.IOService;
 import lombok.AllArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
@@ -23,6 +24,8 @@ public class CommandCipherController {
     private final AffineCipherService affineCipherService;
     private final PlayfairCipherService playfairCipherService;
     private final HillCipherService hillCipherService;
+
+    private final VigenereCipherService vigenereCipherService;
     private final IOService ioService;
 
     @ShellMethod(value = "Caesar cipher encrypt command", key = {"-caesar encrypt:", "--c e"})
@@ -101,6 +104,18 @@ public class CommandCipherController {
             sb.append(hillCipherService.decrypt(word)).append(" ");
         }
         return sb.toString();
+    }
+
+    @ShellMethod(value = "Vigenere cipher encrypt command", key = {"-vigenere encrypt:", "--v e"})
+    public String vigenereEncrypt() throws ApiException {
+        var response = ioService.askTextForCipherWithOneKey().split(SEPARATOR);
+        return vigenereCipherService.encrypt(response[0], response[1]);
+    }
+
+    @ShellMethod(value = "Vigenere cipher decrypt command", key = {"-vigenere decrypt:", "--v d"})
+    public String vigenereDecrypt() throws ApiException {
+        var response = ioService.askTextForCipherWithOneKey().split(SEPARATOR);
+        return vigenereCipherService.decrypt(response[0], response[1]);
     }
 
     private int parseKey(String value) throws ApiException {
